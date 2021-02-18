@@ -9,9 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="YOU" />
+<meta name="author" content="Rebecca Smith" />
 
-<meta name="date" content="2021-01-24" />
+<meta name="date" content="2021-02-18" />
 
 <title>Nobel winners</title>
 
@@ -266,25 +266,37 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Nobel winners</h1>
-<h4 class="author">YOU</h4>
-<h4 class="date">2021-01-24</h4>
+<h4 class="author">Rebecca Smith</h4>
+<h4 class="date">2021-02-18</h4>
 
 </div>
 
 
 <pre class="r"><code>library(tidyverse)</code></pre>
 <p>Let’s first load the data:</p>
-<pre class="r"><code>nobel &lt;- ___(___)</code></pre>
+<pre class="r"><code>nobel &lt;- read_csv(&quot;data-raw/nobel.csv&quot;)</code></pre>
+<pre><code>## 
+## -- Column specification --------------------------------------------------------
+## cols(
+##   .default = col_character(),
+##   id = col_double(),
+##   year = col_double(),
+##   born_date = col_date(format = &quot;&quot;),
+##   died_date = col_date(format = &quot;&quot;),
+##   share = col_double()
+## )
+## i Use `spec()` for the full column specifications.</code></pre>
 <p>Then let’s split the data into two:</p>
 <pre class="r"><code># stem laureates
-___ &lt;- nobel %&gt;%
-  filter(___)
+nobel_stem &lt;- nobel %&gt;%
+  filter(category %in% c(&quot;Physics&quot;, &quot;Medicine&quot;, &quot;Chemistry&quot;,&quot;Economics&quot;))
 
 # non-steam laureates
-___ &lt;- nobel %&gt;%
-  filter(___)</code></pre>
+nobel_nonstem &lt;- nobel %&gt;%
+  filter(!(category %in% c(&quot;Physics&quot;, &quot;Medicine&quot;, &quot;Chemistry&quot;, &quot;Economics&quot;)))</code></pre>
 <p>And finally write out the data:</p>
-<pre class="r"><code># add code for writing out the two data frames here</code></pre>
+<pre class="r"><code>write_csv(nobel_stem, file = &quot;data/nobel_stem.csv&quot;)
+write_csv(nobel_nonstem, file = &quot;data/nobel_nonstem.csv&quot;)</code></pre>
 <div id="references" class="section level2">
 <h2>References</h2>
 <ol style="list-style-type: decimal">
