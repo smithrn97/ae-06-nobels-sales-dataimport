@@ -13,6 +13,8 @@ library(tidyverse)
 library(readxl)
 install.packages("janitor")
 library(janitor)
+install.packages("readr")
+library(readr)
 ```
 
 ## Exercise 1
@@ -68,29 +70,42 @@ favourite_food <- read_csv("data/favourite-food.csv")
 * Read in the Excel file called `favourite-food.xlsx` from the `data-raw/` folder, 
 taking care of `NA`s and variable types.
 
-```{r label-me6, eval=FALSE}
-fav_food <- read_excel(___, ___)
-fav_food 
+```{r read-in-excel, eval=TRUE}
+fav_food <- read_excel("data-raw/favourite-food.xlsx",
+                       na = c("N/A", "99999"))%>%
+  janitor::clean_names()
+
+fav_food <- fav_food %>%
+  mutate(
+    age = if_else(age == "five", "5", age),
+    age = as.numeric(age)
+  )
+
+glimpse(fav_food)
 ```
 
 * Convert SES (socio economic status) to a factor variables with levels in the 
 following order: `Low`, `Middle`, `High`.
 
-```{r label-me7}
-# add code here
+```{r convert-SEs, eval=TRUE}
+fav_food <- fav_food%>%
+  mutate(ses = fct_relevel(ses, "Low", "Middle", "High"))
+fav_food %>%
+  count(ses)
 ```
 
 * Write out the resulting data frame to `favourite-food.rds` in the `data/` folder.
 
-```{r label-me8}
-# add code here
+```{r write-rds, eval=TRUE}
+write_rds(fav_food, file = "data/favourite-food.rds")
 ```
 
 * Read `favourite-food.rds` back in from the `data/` folder and observe the 
 variable types. Are they as you left them?
 
-```{r label-me9}
-# add code here
+```{r read-rds, eval=TRUE}
+favourite_food <- read_rds("data/favourite-food.rds")
+Count(favourite_food)
 ```
 
 ## References {#references}
