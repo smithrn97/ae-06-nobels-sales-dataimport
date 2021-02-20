@@ -1,6 +1,6 @@
 ---
 title: "Sales"
-author: "YOU"
+author: "Rebecca Smith"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -17,8 +17,9 @@ such that it looks like the following.
 knitr::include_graphics("images/sales-1.png")
 ```
 
-```{r}
-
+```{r read-in, eval=TRUE}
+sales <- read_excel("data-raw/sales.xlsx", skip = 3, col_names = c("id", "n")
+)
 ```
 
 * **Stretch goal:** Manipulate the sales data such such that it looks like the 
@@ -28,8 +29,15 @@ following.
 knitr::include_graphics("images/sales-2.png")
 ```
 
-```{r}
-
+```{r manipulate-df, eval=TRUE}
+sales %>%
+  mutate(
+    is_brand_name = str_detect(id, "Brand"),
+    brand = if_else(is_brand_name, id, NULL)
+  ) %>%
+  fill(brand) %>%
+  filter(!is_brand_name) %>%
+  select(brand, id, n)
 ```
 
 ## References {#references}
